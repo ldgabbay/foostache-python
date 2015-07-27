@@ -3,20 +3,20 @@
 import re
 
 
-class EscapeStack(object):
+class FilterStack(object):
     def __init__(self):
         from collections import deque
-        self._escapers = deque()
+        self._filters = deque()
 
-    def push(self, escaper):
-        self._escapers.appendleft(escaper)
+    def push(self, filter):
+        self._filters.appendleft(filter)
 
     def pop(self):
-        self._escapers.popleft()
+        self._filters.popleft()
 
-    def escape(self, s):
-        for escaper in self._escapers:
-            s = escaper(s)
+    def apply(self, s):
+        for filter in self._filters:
+            s = filter(s)
         return s
 
 
