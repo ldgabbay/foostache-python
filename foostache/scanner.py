@@ -17,6 +17,9 @@ class TextToken(Token):
 
         self._text = text
 
+    def text(self):
+        return self._text
+
     def __repr__(self):
         return self._text
 
@@ -27,6 +30,9 @@ class TagToken(Token):
             raise ValueError("tag_body is not unicode")
 
         self._tag_body = tag_body
+
+    def body(self):
+        return self._tag_body
 
     def __repr__(self):
         return "{{" + self._tag_body + "}}"
