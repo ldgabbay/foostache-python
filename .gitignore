@@ -1,9 +1,9 @@
 .idea/
 *.pyc
 classpath/antlr-4.5.1-complete.jar
-foostache/FoostacheLexer.py
-foostache/FoostacheLexer.tokens
-foostache/FoostacheParser.py
-foostache/FoostacheParser.tokens
-foostache/FoostacheParserListener.py
-foostache/FoostacheParserVisitor.py
+foostache/parser/FoostacheLexer.py
+foostache/parser/FoostacheLexer.tokens
+foostache/parser/FoostacheParser.py
+foostache/parser/FoostacheParser.tokens
+foostache/parser/FoostacheParserListener.py
+foostache/parser/FoostacheParserVisitor.py

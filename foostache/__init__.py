@@ -3,15 +3,11 @@
 import antlr4
 import re
 
-import FoostacheLexer
-import FoostacheParser
-import FoostacheParserListener
-import FoostacheParserVisitor
-
 import filters
-# import scanner
-# import parser
-# import context
+import parser.FoostacheLexer as FoostacheLexer
+import parser.FoostacheParser as FoostacheParser
+import parser.FoostacheParserListener as FoostacheParserListener
+import parser.FoostacheParserVisitor as FoostacheParserVisitor
 
 
 def parse(filename):

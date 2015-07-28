@@ -4,7 +4,7 @@ ANTLR4_JAR=$(CLASSPATH_DIR)/antlr-4.5.1-complete.jar
 ROOT_DIR=$(shell pwd)
 SOURCE_DIR=language/antlr4
 
-TARGET_DIR=foostache
+TARGET_DIR=foostache/parser
 
 generated = $(TARGET_DIR)/FoostacheLexer.py \
 	$(TARGET_DIR)/FoostacheLexer.tokens \
