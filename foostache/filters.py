@@ -3,23 +3,6 @@
 import re
 
 
-class FilterStack(object):
-    def __init__(self):
-        from collections import deque
-        self._filters = deque()
-
-    def push(self, filter):
-        self._filters.appendleft(filter)
-
-    def pop(self):
-        self._filters.popleft()
-
-    def apply(self, s):
-        for filter in self._filters:
-            s = filter(s)
-        return s
-
-
 # http://www.w3.org/TR/html5/syntax.html#data-state
 #   for most cases (data state) only need to escape "&" and "<"
 # http://www.w3.org/TR/html5/syntax.html#attribute-value-(double-quoted)-state

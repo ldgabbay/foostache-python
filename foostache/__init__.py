@@ -9,11 +9,9 @@ import FoostacheParserListener
 import FoostacheParserVisitor
 
 import filters
-import scanner
-import parser
-import context
-
-# https://ianpreston.io/talks/a4talk/#/
+# import scanner
+# import parser
+# import context
 
 
 def parse(filename):
