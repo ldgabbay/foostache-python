@@ -397,8 +397,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         return u"X" # self.defaultResult()
 
 
-
-
 def eval(tree, context):
     v = Visitor(context)
     return v.visit(tree)
