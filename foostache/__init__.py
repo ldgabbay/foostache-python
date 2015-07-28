@@ -331,19 +331,32 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         for x in ctx.iterateClause():
             self.visit(x)
         results = list()
-        if not array:
+
+        (start, stop, step) = self.visit(ctx.indexRange())
+        if start < 0:
+            start = start + len(array)
+        if stop is None:
+            stop = len(array)
+        elif stop < 0:
+            stop = stop + len(array)
+        if step is not None:
+            r = range(start, stop, step)
+        else:
+            r = range(start, stop)
+
+        if not array or not r:
             for x in clauses["else"]:
                 results.append(self.visit(x))
         else:
             for x in clauses["before"]:
                 results.append(self.visit(x))
-            self._contexts.append(array[0])
+            self._contexts.append(array[r[0]])
             results.append(self.visit(ctx.statements()))
             self._contexts.pop()
-            for elem in array[1:]:
+            for i in r[1:]:
                 for x in clauses["between"]:
                     results.append(self.visit(x))
-                self._contexts.append(elem)
+                self._contexts.append(array[i])
                 results.append(self.visit(ctx.statements()))
                 self._contexts.pop()
             for x in clauses["after"]:
@@ -353,7 +366,32 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     # Visit a parse tree produced by FoostacheParser#indexRange.
     def visitIndexRange(self, ctx):
-        return u"" # self.visitChildren(ctx)
+        start = 0
+        if ctx.INTEGER():
+            start = int(ctx.INTEGER().getText())
+        (stop, step) = (None, None)
+        if ctx.indexRangeB():
+            (stop, step) = self.visit(ctx.indexRangeB())
+        return (start, stop, step)
+
+
+    # Visit a parse tree produced by FoostacheParser#indexRange.
+    def visitIndexRangeB(self, ctx):
+        stop = None
+        if ctx.INTEGER():
+            stop = int(ctx.INTEGER().getText())
+        step = None
+        if ctx.indexRangeC():
+            step = self.visit(ctx.indexRangeC())
+        return (stop, step)
+
+
+    # Visit a parse tree produced by FoostacheParser#indexRange.
+    def visitIndexRangeC(self, ctx):
+        value = int(ctx.INTEGER().getText())
+        if value <= 0:
+            return None
+        return value
 
 
     # Visit a parse tree produced by FoostacheParser#iterateClause.

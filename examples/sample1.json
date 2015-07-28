@@ -5,5 +5,5 @@
 	"bool2": false,
 	"sub": {"foo": "bar"},
 	"foo": "baz",
-	"arr": ["a", "b", "c"]
+	"arr": ["a", "b", "c", "d", "e", "f", "g"]
 }
