@@ -169,7 +169,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     # Visit a parse tree produced by FoostacheParser#stringField.
     def visitStringField(self, ctx):
         value = self.visit(ctx.path())
-        for f in reversed(ctx.inlineFilter()):
+        for f in ctx.inlineFilter():
             g = Visitor.FILTERMAP.get(self.visit(f), None)
             if g:
                 value = g(value)
@@ -181,7 +181,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     def visitNumberField(self, ctx):
         value = self.visit(ctx.path())
         value = self.visit(ctx.numberFormat()).format(value)
-        for f in reversed(ctx.inlineFilter()):
+        for f in ctx.inlineFilter():
             g = Visitor.FILTERMAP.get(self.visit(f), None)
             if g:
                 value = g(value)
