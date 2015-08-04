@@ -11,7 +11,7 @@ class Printer(FoostacheParserListener.FoostacheParserListener):
         self.indent = 0
 
     def enterEveryRule(self, ctx):
-        print ' ' * self.indent + "{}: {}".format(type(ctx).__name__, ctx.getText())
+        print ' ' * self.indent + "{}: {}".format(type(ctx).__name__[:-7], ctx.getText())
         self.indent += 1
 
     def exitEveryRule(self, ctx):
