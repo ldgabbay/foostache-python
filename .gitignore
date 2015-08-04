@@ -1,0 +1,13 @@
+.venv/
+.idea/
+build/
+dist/
+foostache.egg-info/
+*.pyc
+classpath/antlr-4.5.1-complete.jar
+foostache/parser/FoostacheLexer.py
+foostache/parser/FoostacheLexer.tokens
+foostache/parser/FoostacheParser.py
+foostache/parser/FoostacheParser.tokens
+foostache/parser/FoostacheParserListener.py
+foostache/parser/FoostacheParserVisitor.py
