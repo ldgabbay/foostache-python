@@ -10,16 +10,19 @@ from visitor import Visitor
 
 class Template(object):
     class Printer(FoostacheParserListener.FoostacheParserListener):
-        def __init__(self):
+        def __init__(self, indent=None):
             super(Template.Printer, self).__init__()
-            self.indent = 0
+            self._indent = indent
+            if not self._indent:
+                self._indent = 2
+            self._total_indent = 0
 
         def enterEveryRule(self, ctx):
-            print ' ' * self.indent + "{}: {}".format(type(ctx).__name__[:-7], ctx.getText())
-            self.indent += 1
+            print ' ' * self._total_indent + "{}: {}".format(type(ctx).__name__[:-7], ctx.getText())
+            self._total_indent += self._indent
 
         def exitEveryRule(self, ctx):
-            self.indent -= 1
+            self._total_indent -= self._indent
 
 
     def __init__(self, data):
@@ -32,8 +35,8 @@ class Template(object):
         parser = FoostacheParser.FoostacheParser(token_stream)
         self._tree = parser.template()
 
-    def dump(self):
-        printer = Template.Printer()
+    def dump(self, indent=None):
+        printer = Template.Printer(indent)
         walker = antlr4.ParseTreeWalker()
         walker.walk(printer, self._tree)
 
