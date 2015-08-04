@@ -22,8 +22,17 @@ $(ANTLR4_JAR) :
 	mkdir -p $(CLASSPATH_DIR)
 	curl -L http://www.antlr.org/download/antlr-4.5.1-complete.jar -o $(ANTLR4_JAR)
 
-.PHONY : clean
+.PHONY : clean pypi pypitest
 
 clean :
 	rm -f $(generated)
 	find foostache -name *.pyc -delete
+	rm -rf build dist foostache.egg-info
+
+pypi : $(generated)
+	python ./setup.py sdist bdist_wheel
+	twine upload -r pypi dist/*
+
+pypitest : $(generated)
+	python ./setup.py sdist bdist_wheel
+	twine upload -r test dist/*
