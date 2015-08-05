@@ -233,11 +233,8 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
 
     def visitTypeExpression(self, ctx):
-        try:
-            value = self.visit(ctx.path())
-            return isinstance(value, Visitor.TYPES[ctx.TYPE().getText()])
-        except KeyError:
-            return False
+        value = self.visit(ctx.path())
+        return isinstance(value, Visitor.TYPES[ctx.TYPE().getText()])
 
 
     def visitParenExpression(self, ctx):
