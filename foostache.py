@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import codecs
 import sys
 
 import cjson
@@ -7,11 +8,15 @@ import cjson
 import foostache
 
 def main(args):
-    tree = foostache.parse(args[0])
-    with open(args[1], "r") as f:
+    with open(args[0], 'rb') as f:
+        bytes = f.read()
+        data = codecs.decode(bytes, 'utf_8')
+
+    with open(args[1], 'rb') as f:
         context = cjson.decode(f.read())
 
-    print foostache.eval(tree, context)
+    template = foostache.Template(data)
+    print template.render(context)
 
     return 0
 
