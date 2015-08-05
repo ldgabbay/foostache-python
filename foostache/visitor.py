@@ -26,10 +26,10 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         "null": (type(None),)
     }
 
-    @classmethod
-    def _is_type(cls, value, type_string):
-        assert type_string in cls.TYPES
-        return type(value) in cls.TYPES[type_string]
+    @staticmethod
+    def _is_type(value, type_string):
+        assert type_string in Visitor.TYPES
+        return type(value) in Visitor.TYPES[type_string]
 
 
     FILTERMAP = {
@@ -240,7 +240,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     def visitTypeExpression(self, ctx):
         value = self.visit(ctx.path())
-        return Visitor._is_type(value, ctx.TYPE().getText())
+        return self._is_type(value, ctx.TYPE().getText())
 
 
     def visitParenExpression(self, ctx):
