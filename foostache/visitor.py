@@ -1,22 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import re
-
 import filters
+import parser.FoostacheParser as FoostacheParser
 import parser.FoostacheParserVisitor as FoostacheParserVisitor
 
 
-class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
-    PARENTS = re.compile("\\^*", re.UNICODE)
-    FIRST = re.compile("(((\\w+)|(\"(([^\\\\\"]|\\\\[\\\\/bfnrt\"]|\\\\u[0-9a-fA-F]{4})*)\")))|(\\[(0|([1-9][0-9]*))\\])", re.UNICODE)
-    REST = re.compile("(\\.((\\w+)|(\"(([^\\\\\"]|\\\\[\\\\/bfnrt\"]|\\\\u[0-9a-fA-F]{4})*)\")))|(\\[(0|([1-9][0-9]*))\\])", re.UNICODE)
-    # >>> FIRST.match("x").groups()
-    # ('x', 'x', 'x', None, None, None, None, None, None)
-    # >>> FIRST.match('"x"').groups()
-    # ('"x"', '"x"', None, '"x"', 'x', 'x', None, None, None)
-    # >>> FIRST.match('[0]').groups()
-    # (None, None, None, None, None, None, '[0]', '0', None)
+class PathError(BaseException):
+    pass
 
+
+class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     TYPES = {
         "string": (str, unicode),
         "array": (list,),
@@ -42,67 +35,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         self._contexts.append(context)
         self._filters = list()
         self._iterates = list()
-
-
-    def resolve(self, path, default=None):
-        if type(path) is not unicode:
-            raise ValueError("path must be a unicode")
-
-        if path == ".":
-            if len(self._contexts) == 0:
-                if default is not None:
-                    return default
-                raise KeyError("no such context")
-            return self._contexts[-1]
-
-        m = Visitor.PARENTS.match(path)
-        assert m
-        head = m.end()
-        if head + 1 > len(self._contexts):
-            if default is not None:
-                return default
-            raise KeyError("no such context")
-        context = self._contexts[-1 - head]
-
-        if head == len(path):
-            return context
-
-        m = Visitor.FIRST.match(path, head)
-        while True:
-            if not m:
-                raise ValueError("cannot parse path element: char {} in {}".format(head, path))
-            if m.group(2):
-                if type(context) is not dict:
-                    if default is not None:
-                        return default
-                    raise KeyError("path element is not an object: char {} in {}".format(head, path))
-                if m.group(3):
-                    key = m.group(3)
-                elif m.group(5):
-                    key = m.group(5)
-                else:
-                    assert False
-                if key not in context:
-                    if default is not None:
-                        return default
-                    raise KeyError("key {} not found: char {} in {}".format(key, head, path))
-                else:
-                    context = context.get(key)
-            elif m.group(7):
-                if type(context) is not list:
-                    if default is not None:
-                        return default
-                    raise KeyError("path element is not an object: char {} in {}".format(head, path))
-                index = int(m.group(8))
-                if index >= len(context):
-                    if default is not None:
-                        return default
-                    raise KeyError("index {} out of bounds: char {} in {}".format(index, head, path))
-                context = context[index]
-            head = m.end()
-            if head == len(path):
-                return context
-            m = Visitor.REST.match(path, head)
 
 
     # Visit a parse tree produced by FoostacheParser#template.
@@ -234,7 +166,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     def visitExistsExpression(self, ctx):
         try:
             return True
-        except KeyError:
+        except PathError:
             return False
 
 
@@ -265,19 +197,87 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         return not self.visit(ctx.expression())
 
 
-    # Visit a parse tree produced by FoostacheParser#path.
-    def visitPath(self, ctx):
-        return self.resolve(ctx.getText()) # self.visitChildren(ctx)
+    def visitDotPath(self, ctx):
+        if len(self._contexts) == 0:
+            raise PathError("no context")
+        return self._contexts[-1]
 
 
-    # Visit a parse tree produced by FoostacheParser#objectKey.
-    def visitObjectKey(self, ctx):
-        return u"" # self.visitChildren(ctx)
+    def visitCaretPath(self, ctx):
+        if len(ctx.CARET()) > len(self._contexts) - 1:
+            raise PathError("no context")
+        self._working_path = self._contexts[-1 - len(ctx.CARET())]
+        self.visitChildren(ctx)
+        result = self._working_path
+        del self._working_path
+        return result
+
+
+    def visitQsObjectKey(self, ctx):
+        if not self._is_type(self._working_path, "object"):
+            raise PathError("not an object")
+
+        chars = list()
+        for t in ctx.getChildren():
+            if t.symbol.type == FoostacheParser.FoostacheParser.CHARQS:
+                chars.append(t.getText())
+            elif t.symbol.type == FoostacheParser.FoostacheParser.ESCCHARQS:
+                x = t.getText()
+                if x[1] == '"':
+                    x = u"\""
+                elif x[1] == '\\':
+                    x = u"\\"
+                elif x[1] == '/':
+                    x = u"/"
+                elif x[1] == 'b':
+                    x = u"\b"
+                elif x[1] == 'f':
+                    x = u"\f"
+                elif x[1] == 'n':
+                    x = u"\n"
+                elif x[1] == 'r':
+                    x = u"\r"
+                elif x[1] == 't':
+                    x = u"\t"
+                elif x[1] == 'u':
+                    x = unichr(int(x[2:], 16))
+                else:
+                    assert False
+                chars.append(x)
+        key = u"".join(chars)
+
+        if key not in self._working_path:
+            raise PathError(u"key {} not found in {}".format(ctx.getText(), self._working_path))
+
+        self._working_path = self._working_path[key] 
+
+
+    def visitIdObjectKey(self, ctx):
+        if not self._is_type(self._working_path, "object"):
+            raise PathError("not an object")
+
+        key = ctx.getText()
+
+        if key not in self._working_path:
+            raise PathError(u"key {} not found in {}".format(ctx.getText(), self._working_path))
+
+        self._working_path = self._working_path[key]
 
 
     # Visit a parse tree produced by FoostacheParser#arrayIndex.
     def visitArrayIndex(self, ctx):
-        return u"" # self.visitChildren(ctx)
+        if not self._is_type(self._working_path, "array"):
+            raise PathError("not an array")
+
+        index = int(ctx.getText())
+
+        if index < 0:
+            index = len(self._working_path) + index
+
+        if (index < 0) or (index > len(self._working_path)):
+            raise PathError("index {} out of range".format(ctx.getText()))
+
+        self._working_path = self._working_path[index]
 
 
     # Visit a parse tree produced by FoostacheParser#withBlock.
