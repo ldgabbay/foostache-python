@@ -18,13 +18,19 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     # (None, None, None, None, None, None, '[0]', '0', None)
 
     TYPES = {
-        "string": unicode,
-        "array": list,
-        "object": dict,
+        "string": (str, unicode),
+        "array": (list,),
+        "object": (dict,),
         "number": (int, float),
-        "boolean": bool,
-        "null": type(None)
+        "boolean": (bool,),
+        "null": (type(None),)
     }
+
+    @classmethod
+    def _is_type(cls, value, type_string):
+        assert type_string in cls.TYPES
+        return type(value) in cls.TYPES[type_string]
+
 
     FILTERMAP = {
         "html": filters.html5,
@@ -234,7 +240,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     def visitTypeExpression(self, ctx):
         value = self.visit(ctx.path())
-        return isinstance(value, Visitor.TYPES[ctx.TYPE().getText()])
+        return Visitor._is_type(value, ctx.TYPE().getText())
 
 
     def visitParenExpression(self, ctx):
