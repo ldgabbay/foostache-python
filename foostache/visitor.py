@@ -27,7 +27,8 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     FILTERMAP = {
         "html": filters.html5,
-        "uri": filters.uri_component
+        "uri": filters.uri_component,
+        "jss": filters.js_string
     }
 
     def __init__(self, context):
