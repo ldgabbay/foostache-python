@@ -52,3 +52,26 @@ for i in range(256):
     uri_component._map.append("%{0:02X}".format(i))
 for i in [45, 46, 95, 126] + range(48, 58) + range(65, 91) + range(97, 123):
     uri_component._map[i] = chr(i)
+
+
+# http://www.ecma-international.org/ecma-262/6.0/index.html#sec-static-semantics-sv
+
+def js_string(s):
+    fragments = list()
+    # TODO optimize this loop
+    for ch in s:
+        fragments.append(js_string._map.get(ch, ch))
+    return u''.join(fragments)
+
+
+js_string._map = {
+    "\b": "\\b",        # \b  0x0008  BACKSPACE   <BS>
+    "\t": "\\t",        # \t  0x0009  CHARACTER TABULATION    <HT>
+    "\n": "\\n",        # \n  0x000A  LINE FEED (LF)  <LF>
+    "\v": "\\v",        # \v  0x000B  LINE TABULATION <VT>
+    "\f": "\\f",        # \f  0x000C  FORM FEED (FF)  <FF>
+    "\r": "\\r",        # \r  0x000D  CARRIAGE RETURN (CR)    <CR>
+    "\"": "\\\"",       # \"  0x0022  QUOTATION MARK  "
+    "\'": "\\\'",       # \'  0x0027  APOSTROPHE  '
+    "\\": "\\\\",       # \\  0x005C  REVERSE SOLIDUS \
+}

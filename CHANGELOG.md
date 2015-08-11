@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.1.0 - 2015-08-10
+### Added
+- foostache 1.1.0 support
+	- `jss` filter support
+
 ## 1.0.1 - 2015-08-04
 ### Fixed
 - Throw exception when "path is type" has invalid path
