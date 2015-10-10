@@ -315,7 +315,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         (stop, step) = (None, None)
         if ctx.indexRangeB():
             (stop, step) = self.visit(ctx.indexRangeB())
-        return (start, stop, step)
+        return start, stop, step
 
     # Visit a parse tree produced by FoostacheParser#indexRange.
     def visitIndexRangeB(self, ctx):
@@ -325,7 +325,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         step = None
         if ctx.indexRangeC():
             step = self.visit(ctx.indexRangeC())
-        return (stop, step)
+        return stop, step
 
     # Visit a parse tree produced by FoostacheParser#indexRange.
     def visitIndexRangeC(self, ctx):
