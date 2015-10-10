@@ -146,6 +146,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     def visitExistsExpression(self, ctx):
         try:
+            self.visit(ctx.path())
             return True
         except PathError:
             return False
