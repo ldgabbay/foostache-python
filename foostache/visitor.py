@@ -105,7 +105,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 else:
                     return "{{:{}.{}f}}".format(ctx.width.text, p)
             return "{{:.{}f}}".format(p)
-        return u""
 
     def visitInlineFilter(self, ctx):
         return ctx.ID().getText()
