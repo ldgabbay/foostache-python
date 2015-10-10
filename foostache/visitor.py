@@ -24,7 +24,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         assert type_string in Visitor.TYPES
         return type(value) in Visitor.TYPES[type_string]
 
-
     FILTERMAP = {
         "html": filters.html5,
         "uri": filters.uri_component,
@@ -37,11 +36,9 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         self._filters = list()
         self._iterates = list()
 
-
     # Visit a parse tree produced by FoostacheParser#template.
     def visitTemplate(self, ctx):
         return self.visit(ctx.statements())
-
 
     # Visit a parse tree produced by FoostacheParser#statements.
     def visitStatements(self, ctx):
@@ -50,28 +47,23 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             results.append(self.visit(statement))
         return u''.join(results)
 
-
     # Visit a parse tree produced by FoostacheParser#statement.
     def visitStatement(self, ctx):
         return self.visitChildren(ctx)
-
 
     # Visit a parse tree produced by FoostacheParser#rawText.
     def visitRawText(self, ctx):
         return ctx.getText()
 
-
     # Visit a parse tree produced by FoostacheParser#literalText.
     def visitLiteral(self, ctx):
         return ctx.literalText().getText()
 
-
-    def applyFilters(self, s):
+    def apply_filters(self, s):
         for f in reversed(self._filters):
             if f:
                 s = f(s)
         return s
-
 
     # Visit a parse tree produced by FoostacheParser#stringField.
     def visitStringField(self, ctx):
@@ -80,9 +72,8 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             g = Visitor.FILTERMAP.get(self.visit(f), None)
             if g:
                 value = g(value)
-        value = self.applyFilters(value)
+        value = self.apply_filters(value)
         return value
-
 
     # Visit a parse tree produced by FoostacheParser#numberField.
     def visitNumberField(self, ctx):
@@ -92,9 +83,8 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             g = Visitor.FILTERMAP.get(self.visit(f), None)
             if g:
                 value = g(value)
-        value = self.applyFilters(value)
+        value = self.apply_filters(value)
         return unicode(value)
-
 
     def visitNumberFormat(self, ctx):
         # PERCENT (flags=ZERO)? (width=PINTEGERN)? (DOTN precision=PINTEGERN)? specifier=NUMBER_SPECIFIER
@@ -105,7 +95,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 else:
                     return "{{:{}d}}".format(ctx.width.text)
             return "{:d}"
-        else: # if ctx.specifier.text == u"f":
+        else:  # if ctx.specifier.text == u"f":
             p = u"6"
             if ctx.precision:
                 p = ctx.precision.text
@@ -115,12 +105,9 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 else:
                     return "{{:{}.{}f}}".format(ctx.width.text, p)
             return "{{:.{}f}}".format(p)
-        return u""
-
 
     def visitInlineFilter(self, ctx):
         return ctx.ID().getText()
-
 
     # Visit a parse tree produced by FoostacheParser#ifBlock.
     def visitIfBlock(self, ctx):
@@ -133,52 +120,43 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             return self.visit(ctx.elseBlock().statements())
         return u""
 
-
     # Visit a parse tree produced by FoostacheParser#ifTag.
     def visitIfTag(self, ctx):
         return self.visit(ctx.expression())
-
 
     #    # Visit a parse tree produced by FoostacheParser#elseifBlock.
     #    def visitElseifBlock(self, ctx):
     #        return u"" # self.visitChildren(ctx)
 
-
     # Visit a parse tree produced by FoostacheParser#elseifTag.
     def visitElseifTag(self, ctx):
         return self.visit(ctx.expression())
-
 
     #    # Visit a parse tree produced by FoostacheParser#elseBlock.
     #    def visitElseBlock(self, ctx):
     #        return u"" # self.visitChildren(ctx)
 
-
     #    # Visit a parse tree produced by FoostacheParser#expression.
     #    def visitExpression(self, ctx):
     #        return self.visitChildren(ctx)
-
 
     def visitBoolExpression(self, ctx):
         # TODO confirm boolean
         return self.visit(ctx.path())
 
-
     def visitExistsExpression(self, ctx):
         try:
+            self.visit(ctx.path())
             return True
         except PathError:
             return False
-
 
     def visitTypeExpression(self, ctx):
         value = self.visit(ctx.path())
         return self._is_type(value, ctx.TYPE().getText())
 
-
     def visitParenExpression(self, ctx):
         return self.visit(ctx.expression())
-
 
     def visitAndExpression(self, ctx):
         if not self.visit(ctx.expr1):
@@ -186,23 +164,19 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         else:
             return self.visit(ctx.expr2)
 
-
     def visitOrExpression(self, ctx):
         if self.visit(ctx.expr1):
             return True
         else:
             return self.visit(ctx.expr2)
 
-
     def visitNotExpression(self, ctx):
         return not self.visit(ctx.expression())
-
 
     def visitDotPath(self, ctx):
         if len(self._contexts) == 0:
             raise PathError("no context")
         return self._contexts[-1]
-
 
     def visitCaretPath(self, ctx):
         if len(ctx.CARET()) > len(self._contexts) - 1:
@@ -212,7 +186,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         result = self._working_path
         del self._working_path
         return result
-
 
     def visitQsObjectKey(self, ctx):
         if not self._is_type(self._working_path, "object"):
@@ -250,8 +223,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         if key not in self._working_path:
             raise PathError(u"key {} not found in {}".format(ctx.getText(), self._working_path))
 
-        self._working_path = self._working_path[key] 
-
+        self._working_path = self._working_path[key]
 
     def visitIdObjectKey(self, ctx):
         if not self._is_type(self._working_path, "object"):
@@ -263,7 +235,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             raise PathError(u"key {} not found in {}".format(ctx.getText(), self._working_path))
 
         self._working_path = self._working_path[key]
-
 
     # Visit a parse tree produced by FoostacheParser#arrayIndex.
     def visitArrayIndex(self, ctx):
@@ -280,14 +251,12 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
         self._working_path = self._working_path[index]
 
-
     # Visit a parse tree produced by FoostacheParser#withBlock.
     def visitWithBlock(self, ctx):
         self._contexts.append(self.visit(ctx.path()))
         value = self.visit(ctx.statements())
         self._contexts.pop()
         return value
-
 
     # Visit a parse tree produced by FoostacheParser#iterateBlock.
     def visitIterateBlock(self, ctx):
@@ -335,7 +304,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 results.append(self.visit(x))
         return u"".join(results)
 
-
     # Visit a parse tree produced by FoostacheParser#indexRange.
     def visitIndexRange(self, ctx):
         start = 0
@@ -344,8 +312,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         (stop, step) = (None, None)
         if ctx.indexRangeB():
             (stop, step) = self.visit(ctx.indexRangeB())
-        return (start, stop, step)
-
+        return start, stop, step
 
     # Visit a parse tree produced by FoostacheParser#indexRange.
     def visitIndexRangeB(self, ctx):
@@ -355,8 +322,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         step = None
         if ctx.indexRangeC():
             step = self.visit(ctx.indexRangeC())
-        return (stop, step)
-
+        return stop, step
 
     # Visit a parse tree produced by FoostacheParser#indexRange.
     def visitIndexRangeC(self, ctx):
@@ -365,35 +331,29 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             return None
         return value
 
-
     # Visit a parse tree produced by FoostacheParser#iterateClause.
     def visitIterateClause(self, ctx):
         return self.visitChildren(ctx)
 
-
     # Visit a parse tree produced by FoostacheParser#iterateBeforeClause.
     def visitIterateBeforeClause(self, ctx):
         self._iterates[-1]["before"].append(ctx.statements())
-        return None # self.visitChildren(ctx)
-
+        return None  # self.visitChildren(ctx)
 
     # Visit a parse tree produced by FoostacheParser#iterateAfterClause.
     def visitIterateAfterClause(self, ctx):
         self._iterates[-1]["after"].append(ctx.statements())
-        return None # self.visitChildren(ctx)
-
+        return None  # self.visitChildren(ctx)
 
     # Visit a parse tree produced by FoostacheParser#iterateBetweenClause.
     def visitIterateBetweenClause(self, ctx):
         self._iterates[-1]["between"].append(ctx.statements())
-        return None # self.visitChildren(ctx)
-
+        return None  # self.visitChildren(ctx)
 
     # Visit a parse tree produced by FoostacheParser#iterateElseClause.
     def visitIterateElseClause(self, ctx):
         self._iterates[-1]["else"].append(ctx.statements())
-        return None # self.visitChildren(ctx)
-
+        return None  # self.visitChildren(ctx)
 
     # Visit a parse tree produced by FoostacheParser#filterBlock.
     def visitFilterBlock(self, ctx):
