@@ -59,7 +59,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     def visitLiteral(self, ctx):
         return ctx.literalText().getText()
 
-    def applyFilters(self, s):
+    def apply_filters(self, s):
         for f in reversed(self._filters):
             if f:
                 s = f(s)
@@ -72,7 +72,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             g = Visitor.FILTERMAP.get(self.visit(f), None)
             if g:
                 value = g(value)
-        value = self.applyFilters(value)
+        value = self.apply_filters(value)
         return value
 
     # Visit a parse tree produced by FoostacheParser#numberField.
@@ -83,7 +83,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             g = Visitor.FILTERMAP.get(self.visit(f), None)
             if g:
                 value = g(value)
-        value = self.applyFilters(value)
+        value = self.apply_filters(value)
         return unicode(value)
 
     def visitNumberFormat(self, ctx):
