@@ -129,7 +129,6 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     #    def visitElseifBlock(self, ctx):
     #        return u"" # self.visitChildren(ctx)
 
-
     # Visit a parse tree produced by FoostacheParser#elseifTag.
     def visitElseifTag(self, ctx):
         return self.visit(ctx.expression())
@@ -138,11 +137,9 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     #    def visitElseBlock(self, ctx):
     #        return u"" # self.visitChildren(ctx)
 
-
     #    # Visit a parse tree produced by FoostacheParser#expression.
     #    def visitExpression(self, ctx):
     #        return self.visitChildren(ctx)
-
 
     def visitBoolExpression(self, ctx):
         # TODO confirm boolean
