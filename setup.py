@@ -12,7 +12,7 @@ def read(*paths):
 
 setup(
     name='foostache',
-    version='1.1.1',
+    version='1.1.2',
     description='Implementation of foostache template language',
     long_description=read('README.rst'),
     url='https://github.com/ldgabbay/foostache-python/',
@@ -21,8 +21,8 @@ setup(
     license='MIT',
     classifiers = [
 #        'Development Status :: 3 - Alpha',
-        'Development Status :: 4 - Beta',
-#        'Development Status :: 5 - Production/Stable',
+#        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
@@ -35,6 +35,7 @@ setup(
         'Topic :: Software Development :: Libraries'
     ],
     packages=find_packages(),
+    scripts=['bin/foostache'],
     keywords='foostache mustache',
     install_requires=[
         "antlr4-python2-runtime>=4.5,<4.6"
