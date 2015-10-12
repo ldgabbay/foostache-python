@@ -35,6 +35,7 @@ setup(
         'Topic :: Software Development :: Libraries'
     ],
     packages=find_packages(),
+    scripts=['bin/foostache'],
     keywords='foostache mustache',
     install_requires=[
         "antlr4-python2-runtime>=4.5,<4.6"
