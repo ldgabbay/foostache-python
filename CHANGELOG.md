@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.1.2 - 2015-10-12
+### Changed
+- Bumped Development Status to 5 - Production/Stable
+- Enforced clean before building for PyPI
+
+### Added
+- `foostache` as an installed script
+
 ## 1.1.1 - 2015-10-09
 ### Fixed
 - "path exists" was always evaluating true
