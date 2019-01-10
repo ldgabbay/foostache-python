@@ -14,7 +14,7 @@ setup(
     name='foostache',
     version='1.1.2',
     description='Implementation of foostache template language',
-    long_description=read('README.rst'),
+    long_description=read('description.rst'),
     url='https://github.com/ldgabbay/foostache-python/',
     author='Lynn Gabbay',
     author_email='gabbay@gmail.com',
