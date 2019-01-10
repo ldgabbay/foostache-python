@@ -39,6 +39,6 @@ setup(
     keywords='foostache mustache',
     install_requires=[
         "antlr4-python2-runtime>=4.5,<4.6",
-        "python-cjson==1.1.0"
+        "ujson==1.35"
     ]
 )
