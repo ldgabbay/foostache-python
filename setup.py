@@ -12,7 +12,7 @@ def read(*paths):
 
 setup(
     name='foostache',
-    version='1.1.2',
+    version='1.2.dev0',
     description='Implementation of foostache template language',
     long_description=read('description.rst'),
     url='https://github.com/ldgabbay/foostache-python/',
