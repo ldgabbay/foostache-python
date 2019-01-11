@@ -6,6 +6,9 @@ SOURCE_DIR=language/antlr4
 
 TARGET_DIR=foostache/parser
 
+BUILD_DIR=build
+DIST_DIR=dist
+
 generated = \
 	$(TARGET_DIR)/FoostacheLexer.interp \
 	$(TARGET_DIR)/FoostacheLexer.py \
@@ -34,16 +37,17 @@ distclean : clean
 	find foostache -name \*.pyc -delete
 
 clean :
-	rm -rf .eggs build dist foostache.egg-info
+	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) foostache.egg-info
 
 dist : clean $(generated)
-	python ./setup.py sdist bdist_wheel
+	python ./setup.py sdist --dist-dir $(DIST_DIR)
+	python ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
 test :
 	python ./setup.py test
 
 pypi : dist
-	twine upload -r pypi dist/*
+	twine upload -r pypi $(DIST_DIR)/*
 
 pypitest : dist
-	twine upload -r test dist/*
+	twine upload -r testpypi $(DIST_DIR)/*
