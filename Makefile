@@ -20,13 +20,13 @@ $(generated) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/Foost
 
 $(ANTLR4_JAR) :
 	mkdir -p $(CLASSPATH_DIR)
-	curl -L http://www.antlr.org/download/antlr-4.5.1-complete.jar -o $(ANTLR4_JAR)
+	curl -sSL http://www.antlr.org/download/antlr-4.5.1-complete.jar -o $(ANTLR4_JAR)
 
 .PHONY : clean distclean dist test pypi pypitest
 
 distclean : clean
-	rm -f $(generated)
-	find foostache -name *.pyc -delete
+	rm -f $(generated) $(ANTLR4_JAR)
+	find foostache -name \*.pyc -delete
 
 clean :
 	rm -rf .eggs build dist foostache.egg-info
