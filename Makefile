@@ -43,7 +43,7 @@ dist : clean $(generated)
 	python ./setup.py sdist --dist-dir $(DIST_DIR)
 	python ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
-test :
+test : all
 	python ./setup.py test
 
 pypi : dist
