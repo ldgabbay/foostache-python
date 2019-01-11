@@ -1,2 +1,0 @@
-antlr4-python2-runtime~=4.7.2
-ujson==1.35
