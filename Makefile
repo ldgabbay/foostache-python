@@ -6,6 +6,7 @@ SOURCE_DIR=language/antlr4
 
 TARGET_DIR=foostache/parser
 
+VERSION=1.2.dev0
 BUILD_DIR=build
 DIST_DIR=dist
 
@@ -39,8 +40,12 @@ distclean : clean
 clean :
 	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) foostache.egg-info
 
-dist : clean $(generated)
+dist : $(DIST_DIR)/foostache-$(VERSION).tar.gz $(DIST_DIR)/foostache-$(VERSION)-py2-none-any.whl
+
+$(DIST_DIR)/foostache-$(VERSION).tar.gz : $(generated)
 	python ./setup.py sdist --dist-dir $(DIST_DIR)
+
+$(DIST_DIR)/foostache-$(VERSION)-py2-none-any.whl : $(generated)
 	python ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
 test : all
