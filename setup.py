@@ -2,7 +2,7 @@
 
 import os
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 def read(*paths):
@@ -31,7 +31,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing',
     ],
-    packages=find_packages(),
+    packages=['foostache', 'foostache.parser'],
     entry_points={
         'console_scripts': [
             'foostache = foostache.cli:main',
