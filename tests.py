@@ -1,10 +1,9 @@
 #coding:utf_8
 
-import unittest
+from builtins import open
+
 import os
-import sys
-if sys.version_info[0] == 2:
-    from io import open
+import unittest
 
 import ujson
 

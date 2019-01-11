@@ -1,7 +1,12 @@
+*.pyc
+*/__pycache__/
+
 .eggs/
 build/
 dist/
 foostache.egg-info/
-*.pyc
 classpath/
-foostache/parser/
+foostache/py2parser/*
+!foostache/py2parser/__init__.py
+foostache/py3parser/*
+!foostache/py3parser/__init__.py

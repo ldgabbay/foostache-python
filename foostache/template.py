@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+from __future__ import print_function
+from builtins import object
+from builtins import str
+
 import antlr4
 
-import parser.FoostacheLexer as FoostacheLexer
-import parser.FoostacheParser as FoostacheParser
-import parser.FoostacheParserListener as FoostacheParserListener
-from visitor import Visitor
+from . import FoostacheLexer
+from . import FoostacheParser
+from . import FoostacheParserListener
+from .visitor import Visitor
 
 
 class Template(object):
@@ -18,7 +23,7 @@ class Template(object):
             self._total_indent = 0
 
         def enterEveryRule(self, ctx):
-            print ' ' * self._total_indent + "{}: {}".format(type(ctx).__name__[:-7], ctx.getText())
+            print(' ' * self._total_indent + "{}: {}".format(type(ctx).__name__[:-7], ctx.getText()))
             self._total_indent += self._indent
 
         def exitEveryRule(self, ctx):
@@ -26,8 +31,8 @@ class Template(object):
 
 
     def __init__(self, data):
-        if not isinstance(data, unicode):
-            raise ValueError('data is not unicode')
+        if not isinstance(data, str):
+            raise ValueError('data is not str')
 
         input_stream = antlr4.InputStream(data)
         lexer = FoostacheLexer.FoostacheLexer(input_stream)

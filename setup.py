@@ -1,7 +1,30 @@
 # -*- coding: utf-8 -*-
 
+#from __future__ import (absolute_import, division, print_function, unicode_literals)
+#from builtins import (ascii, bytes, chr, dict, filter, hex, input, int, map, next, oct, open, pow, range, round, str, super, zip)
+
 import re
+import io
 import os
+import sys
+
+if sys.version_info[0] == 2:
+    from io import open
+    pyv_install_requires = [
+        "antlr4-python2-runtime~=4.7.2",
+    ]
+    pyv_packages = [
+        'foostache.py2parser',
+    ]
+elif sys.version_info[0] == 3:
+    pyv_install_requires = [
+        "antlr4-python3-runtime~=4.7.2",
+    ]
+    pyv_packages = [
+        'foostache.py3parser',
+    ]
+else:
+    raise RuntimeError("Unhandled Python version.")
 
 from setuptools import setup
 
@@ -34,13 +57,18 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2 :: Only',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing',
     ],
-    packages=['foostache', 'foostache.parser'],
+    packages=[
+        'foostache'
+    ] + pyv_packages,
     entry_points={
         'console_scripts': [
             'foostache = foostache.cli:main',
@@ -49,7 +77,7 @@ setup(
     test_suite="tests",
     keywords='foostache mustache',
     install_requires=[
-        "antlr4-python2-runtime~=4.7.2",
-        "ujson==1.35"
-    ]
+        "future",
+        "ujson==1.35",
+    ] + pyv_install_requires,
 )

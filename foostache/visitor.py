@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import filters
-import parser.FoostacheParser as FoostacheParser
-import parser.FoostacheParserVisitor as FoostacheParserVisitor
+from __future__ import absolute_import
+from builtins import str
+from builtins import chr
+from builtins import range
+
+from . import filters
+
+from . import FoostacheParser
+from . import FoostacheParserVisitor
 
 
 class PathError(BaseException):
@@ -11,7 +17,7 @@ class PathError(BaseException):
 
 class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     TYPES = {
-        "string": (str, unicode),
+        "string": (str,),
         "array": (list,),
         "object": (dict,),
         "number": (int, float),
@@ -84,7 +90,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             if g:
                 value = g(value)
         value = self.apply_filters(value)
-        return unicode(value)
+        return str(value)
 
     def visitNumberFormat(self, ctx):
         # PERCENT (flags=ZERO)? (width=PINTEGERN)? (DOTN precision=PINTEGERN)? specifier=NUMBER_SPECIFIER
@@ -214,7 +220,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 elif x[1] == 't':
                     x = u"\t"
                 elif x[1] == 'u':
-                    x = unichr(int(x[2:], 16))
+                    x = chr(int(x[2:], 16))
                 else:
                     assert False
                 chars.append(x)
@@ -281,9 +287,9 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         elif stop < 0:
             stop = stop + len(array)
         if step is not None:
-            r = range(start, stop, step)
+            r = list(range(start, stop, step))
         else:
-            r = range(start, stop)
+            r = list(range(start, stop))
 
         if not array or not r:
             for x in clauses["else"]:

@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
+
 __version__ = '1.2.dev0'
 
-from template import Template
+import sys
+
+if sys.version_info[0] == 2:
+    from .py2parser import (FoostacheLexer, FoostacheParser, FoostacheParserListener, FoostacheParserVisitor)
+elif sys.version_info[0] == 3:
+    from .py3parser import (FoostacheLexer, FoostacheParser, FoostacheParserListener, FoostacheParserVisitor)
+else:
+    raise RuntimeError("Unhandled Python version.")
+
+from .template import Template
