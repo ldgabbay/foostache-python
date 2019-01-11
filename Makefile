@@ -54,5 +54,5 @@ test : all
 pypi : dist
 	twine upload -r pypi $(DIST_DIR)/*
 
-pypitest : dist
+testpypi : dist
 	twine upload -r testpypi $(DIST_DIR)/*
