@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 import os
 
 from setuptools import setup
@@ -10,9 +11,17 @@ def read(*paths):
         return f.read()
 
 
+def find_version(*file_paths):
+    version_file = read(*file_paths)
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
+
 setup(
     name='foostache',
-    version='1.2.dev0',
+    version=find_version('foostache', '__init__.py'),
     description='Implementation of foostache template language',
     long_description=read('description.rst'),
     url='https://github.com/ldgabbay/foostache-python/',
