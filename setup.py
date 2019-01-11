@@ -36,7 +36,7 @@ setup(
     test_suite="tests",
     keywords='foostache mustache',
     install_requires=[
-        "antlr4-python2-runtime~=4.5.1",
+        "antlr4-python2-runtime~=4.7.2",
         "ujson==1.35"
     ]
 )

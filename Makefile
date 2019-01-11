@@ -1,5 +1,5 @@
 CLASSPATH_DIR=classpath
-ANTLR4_JAR=$(CLASSPATH_DIR)/antlr-4.5.1-complete.jar
+ANTLR4_JAR=$(CLASSPATH_DIR)/antlr-4.7.2-complete.jar
 
 ROOT_DIR=$(shell pwd)
 SOURCE_DIR=language/antlr4
@@ -7,8 +7,10 @@ SOURCE_DIR=language/antlr4
 TARGET_DIR=foostache/parser
 
 generated = \
+	$(TARGET_DIR)/FoostacheLexer.interp \
 	$(TARGET_DIR)/FoostacheLexer.py \
 	$(TARGET_DIR)/FoostacheLexer.tokens \
+	$(TARGET_DIR)/FoostacheParser.interp \
 	$(TARGET_DIR)/FoostacheParser.py \
 	$(TARGET_DIR)/FoostacheParser.tokens \
 	$(TARGET_DIR)/FoostacheParserListener.py \
@@ -25,7 +27,7 @@ $(generated) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/Foost
 
 $(ANTLR4_JAR) :
 	mkdir -p $(CLASSPATH_DIR)
-	curl -sSL http://www.antlr.org/download/antlr-4.5.1-complete.jar -o $(ANTLR4_JAR)
+	curl -sSL http://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
 
 distclean : clean
 	rm -f $(generated) $(ANTLR4_JAR)
