@@ -33,6 +33,7 @@ setup(
     ],
     packages=find_packages(),
     scripts=['bin/foostache'],
+    test_suite="tests",
     keywords='foostache mustache',
     install_requires=[
         "antlr4-python2-runtime~=4.5.1",
