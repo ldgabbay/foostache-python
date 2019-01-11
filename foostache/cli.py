@@ -8,8 +8,9 @@ import ujson
 
 import foostache
 
-def main():
-    args = sys.argv[1:]
+def main(args=None):
+    if args is None:
+        args = sys.argv[1:]
     with open(args[0], 'rb') as f:
         bytes = f.read()
         data = codecs.decode(bytes, 'utf_8')
