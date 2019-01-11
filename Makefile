@@ -30,7 +30,7 @@ $(generated) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/Foost
 
 $(ANTLR4_JAR) :
 	mkdir -p $(CLASSPATH_DIR)
-	curl -sSL http://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
+	curl -sSL https://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
 
 distclean : clean
 	rm -f $(generated) $(ANTLR4_JAR)
