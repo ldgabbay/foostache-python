@@ -6,13 +6,18 @@ SOURCE_DIR=language/antlr4
 
 TARGET_DIR=foostache/parser
 
-generated = $(TARGET_DIR)/FoostacheLexer.py \
+generated = \
+	$(TARGET_DIR)/FoostacheLexer.py \
 	$(TARGET_DIR)/FoostacheLexer.tokens \
 	$(TARGET_DIR)/FoostacheParser.py \
 	$(TARGET_DIR)/FoostacheParser.tokens \
 	$(TARGET_DIR)/FoostacheParserListener.py \
 	$(TARGET_DIR)/FoostacheParserVisitor.py
 
+
+.PHONY : all clean distclean dist test pypi pypitest
+
+all : $(generated)
 
 $(generated) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/FoostacheParser.g4
 	mkdir -p $(TARGET_DIR)
@@ -21,8 +26,6 @@ $(generated) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/Foost
 $(ANTLR4_JAR) :
 	mkdir -p $(CLASSPATH_DIR)
 	curl -sSL http://www.antlr.org/download/antlr-4.5.1-complete.jar -o $(ANTLR4_JAR)
-
-.PHONY : clean distclean dist test pypi pypitest
 
 distclean : clean
 	rm -f $(generated) $(ANTLR4_JAR)
