@@ -1,5 +1,6 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import codecs
 import sys
 
@@ -7,7 +8,8 @@ import ujson
 
 import foostache
 
-def main(args):
+def main():
+    args = sys.argv[1:]
     with open(args[0], 'rb') as f:
         bytes = f.read()
         data = codecs.decode(bytes, 'utf_8')
@@ -16,10 +18,6 @@ def main(args):
         context = ujson.decode(f.read())
 
     template = foostache.Template(data)
-    print template.render(context)
+    print(template.render(context), end='')
 
     return 0
-
-
-if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))

@@ -32,7 +32,11 @@ setup(
         'Topic :: Text Processing',
     ],
     packages=find_packages(),
-    scripts=['bin/foostache'],
+    entry_points={
+        'console_scripts': [
+            'foostache = foostache.cli:main',
+        ],
+    },
     test_suite="tests",
     keywords='foostache mustache',
     install_requires=[
