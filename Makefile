@@ -34,7 +34,7 @@ $(ANTLR4_JAR) :
 
 distclean : clean
 	rm -f $(generated) $(ANTLR4_JAR)
-	find foostache -name \*.pyc -delete
+	find . -name \*.pyc -delete
 
 clean :
 	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) foostache.egg-info
