@@ -28,7 +28,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
     @staticmethod
     def _is_type(value, type_string):
         assert type_string in Visitor.TYPES
-        return type(value) in Visitor.TYPES[type_string]
+        return isinstance(value, Visitor.TYPES[type_string])
 
     FILTERMAP = {
         "html": filters.html5,
