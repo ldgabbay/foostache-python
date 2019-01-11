@@ -77,7 +77,7 @@ setup(
     test_suite="tests",
     keywords='foostache mustache',
     install_requires=[
-        "future",
+        "future>=0.17.1",
         "ujson==1.35",
     ] + pyv_install_requires,
 )
