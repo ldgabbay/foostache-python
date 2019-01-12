@@ -1,32 +1,27 @@
-# -*- coding: utf-8 -*-
-
-#from __future__ import (absolute_import, division, print_function, unicode_literals)
-#from builtins import (ascii, bytes, chr, dict, filter, hex, input, int, map, next, oct, open, pow, range, round, str, super, zip)
-
-import re
-import io
 import os
+import re
+from setuptools import setup
 import sys
+
+
+PACKAGES = [
+    'foostache',
+]
+
+INSTALL_REQUIRES = [
+    "future>=0.17.1",
+    "ujson==1.35",
+]
 
 if sys.version_info[0] == 2:
     from io import open
-    pyv_install_requires = [
-        "antlr4-python2-runtime~=4.7.2",
-    ]
-    pyv_packages = [
-        'foostache.py2parser',
-    ]
+    PACKAGES.append('foostache.py2parser')
+    INSTALL_REQUIRES.append("antlr4-python2-runtime~=4.7.2")
 elif sys.version_info[0] == 3:
-    pyv_install_requires = [
-        "antlr4-python3-runtime~=4.7.2",
-    ]
-    pyv_packages = [
-        'foostache.py3parser',
-    ]
+    PACKAGES.append('foostache.py3parser')
+    INSTALL_REQUIRES.append("antlr4-python3-runtime~=4.7.2")
 else:
     raise RuntimeError("Unhandled Python version.")
-
-from setuptools import setup
 
 
 def read(*paths):
@@ -42,11 +37,13 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
+HERE = os.path.abspath(os.path.dirname(__file__))
+
 setup(
     name='foostache',
     version=find_version('foostache', '__init__.py'),
     description='Implementation of foostache template language',
-    long_description=read('description.rst'),
+    long_description=read(HERE, 'description.rst'),
     url='https://github.com/ldgabbay/foostache-python/',
     author='Lynn Gabbay',
     author_email='gabbay@gmail.com',
@@ -57,8 +54,11 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -66,9 +66,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing',
     ],
-    packages=[
-        'foostache'
-    ] + pyv_packages,
+    packages=PACKAGES,
     entry_points={
         'console_scripts': [
             'foostache = foostache.cli:main',
@@ -76,8 +74,5 @@ setup(
     },
     test_suite="tests",
     keywords='foostache mustache',
-    install_requires=[
-        "future>=0.17.1",
-        "ujson==1.35",
-    ] + pyv_install_requires,
+    install_requires=INSTALL_REQUIRES,
 )
