@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import (absolute_import, division, print_function, unicode_literals)
+from builtins import (ascii, bytes, chr, dict, filter, hex, input, int, map, next, oct, open, pow, range, round, str, super, zip)
+
 import re
 
 
@@ -40,17 +43,21 @@ html5._hash = {u"&": u"&amp;", u"<": u"&lt;", u">": u"&gt;", u"\"": u"&quot;", u
 # https://docs.python.org/2/library/codecs.html#standard-encodings
 
 def uri_component(s):
-    s = s.encode("utf_8")
+    # in Py2, type(s)=='unicode', type(s.encode('utf_8'))=='str'
+    # in Py3, type(s)=='str'    , type(s.encode('utf_8'))=='bytes'
+    # want 'bytes'
+    s = bytes(s.encode("utf_8"))
     fragments = list()
     for ch in s:
-        fragments.append(uri_component._map[ord(ch)])
+        fragments.append(uri_component._map[ch])
     return u''.join(fragments)
 
 
 uri_component._map = list()
 for i in range(256):
     uri_component._map.append("%{0:02X}".format(i))
-for i in [45, 46, 95, 126] + range(48, 58) + range(65, 91) + range(97, 123):
+# PY23 fix list(range(...))
+for i in [45, 46, 95, 126] + list(range(48, 58)) + list(range(65, 91)) + list(range(97, 123)):
     uri_component._map[i] = chr(i)
 
 
