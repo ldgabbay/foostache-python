@@ -7,15 +7,16 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
-# install:
-#   - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then pip install -r requirements-py2.txt --use-mirrors; fi
-#   - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then pip install -r requirements-py3.txt --use-mirrors; fi
-#   - pip install -r requirements.txt
-script:
-  - python setup.py test
-
 git:
   submodules: false
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
+# install:
+#   - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then pip install -r requirements-py2.txt --use-mirrors; fi
+#   - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then pip install -r requirements-py3.txt --use-mirrors; fi
+#   - pip install -r requirements.txt
+script:
+  - make
+  - python setup.py test
+
