@@ -1,3 +1,4 @@
+import io
 import os
 import re
 from setuptools import setup
@@ -14,7 +15,6 @@ INSTALL_REQUIRES = [
 ]
 
 if sys.version_info[0] == 2:
-    from io import open
     PACKAGES.append('foostache.py2parser')
     INSTALL_REQUIRES.append("antlr4-python2-runtime~=4.7.2")
 elif sys.version_info[0] == 3:
@@ -25,7 +25,7 @@ else:
 
 
 def read(*paths):
-    with open(os.path.join(*paths), 'r') as f:
+    with io.open(os.path.join(*paths), encoding='utf_8') as f:
         return f.read()
 
 
