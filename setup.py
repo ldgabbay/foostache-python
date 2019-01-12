@@ -10,8 +10,8 @@ PACKAGES = [
 ]
 
 INSTALL_REQUIRES = [
-    "future>=0.17.1",
-    "ujson==1.35",
+    "future~=0.17.1",
+    "ujson~=1.35",
 ]
 
 if sys.version_info[0] == 2:
