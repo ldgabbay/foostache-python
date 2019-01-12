@@ -2,43 +2,8 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/foostache.svg)
 ![PyPI - License](https://img.shields.io/pypi/l/foostache.svg)
 
-# `foostache` for Python
+# foostache
 
-## Build Instructions
+**foostache** is a [domain-specific language](https://en.wikipedia.org/wiki/Domain-specific_language) for specifying a template that can be used to generate [unicode](http://unicode.org/) from [JSON](http://json.org/) inputs.
 
-These must be installed:
-
-* `curl`
-* `make`
-* `java`
-* `python`
-* `pip` packages
-	* `setuptools`
-	* `wheel`
-	* `twine`
-
-
-To generate the code:
-```bash
-make
-```
-
-To build the distribution files:
-```bash
-make dist
-```
-
-To test the code:
-```bash
-make test
-```
-
-To upload the distribution files to PyPI:
-```bash
-make pypi
-```
-
-To upload the distribution files to Test PyPI:
-```bash
-make testpypi
-```
+The **foostache** language specification can be found [here](https://github.com/ldgabbay/foostache).

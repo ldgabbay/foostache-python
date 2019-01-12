@@ -43,7 +43,7 @@ setup(
     name='foostache',
     version=find_version('src', 'foostache', '__init__.py'),
     description='Implementation of foostache template language',
-    long_description=read(HERE, 'DESCRIPTION.md'),
+    long_description=read(HERE, 'README.md'),
     long_description_content_type='text/markdown',
     url='https://github.com/ldgabbay/foostache-python/',
     author='Lynn Gabbay',
