@@ -4,9 +4,9 @@
 .eggs/
 build/
 dist/
-foostache.egg-info/
+src/foostache.egg-info/
 classpath/
-foostache/py2parser/*
-!foostache/py2parser/__init__.py
-foostache/py3parser/*
-!foostache/py3parser/__init__.py
+src/foostache/py2parser/*
+!src/foostache/py2parser/__init__.py
+src/foostache/py3parser/*
+!src/foostache/py3parser/__init__.py

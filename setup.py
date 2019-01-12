@@ -41,7 +41,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='foostache',
-    version=find_version('foostache', '__init__.py'),
+    version=find_version('src', 'foostache', '__init__.py'),
     description='Implementation of foostache template language',
     long_description=read(HERE, 'DESCRIPTION.md'),
     long_description_content_type='text/markdown',
@@ -66,6 +66,7 @@ setup(
         'Topic :: Text Processing',
     ],
     packages=PACKAGES,
+    package_dir={'': 'src'},
     entry_points={
         'console_scripts': [
             'foostache = foostache.cli:main',

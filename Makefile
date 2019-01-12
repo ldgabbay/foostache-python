@@ -4,8 +4,8 @@ PKG_NAME := $(shell python ./setup.py --name)
 PKG_VERSION := $(shell python ./setup.py --version)
 
 SOURCE_DIR = language/antlr4
-PY2_TARGET_DIR = foostache/py2parser
-PY3_TARGET_DIR = foostache/py3parser
+PY2_TARGET_DIR = src/foostache/py2parser
+PY3_TARGET_DIR = src/foostache/py3parser
 
 BUILD_DIR = build
 DIST_DIR = dist
@@ -48,7 +48,7 @@ distclean : clean
 	rm -f $(PARSER_FILES) $(ANTLR4_JAR) .tox
 
 clean :
-	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) $(PKG_NAME).egg-info
+	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) src/$(PKG_NAME).egg-info
 	find . -name __pycache__ -type d -print0 | xargs -0 rm -rf
 	find . -name \*.pyc -type f -delete
 
