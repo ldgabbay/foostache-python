@@ -45,13 +45,14 @@ $(ANTLR4_JAR) :
 	curl -sSL https://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
 
 distclean : clean
-	rm -f $(PARSER_FILES) $(ANTLR4_JAR)
-	find . -name \*.pyc -delete
+	rm -f $(PARSER_FILES) $(ANTLR4_JAR) .tox
 
 clean :
 	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) $(PKG_NAME).egg-info
+	find . -name __pycache__ -type d -print0 | xargs -0 rm -rf
+	find . -name \*.pyc -type f -delete
 
-dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
+dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
 
 $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz : $(PARSER_FILES)
 	python ./setup.py sdist --dist-dir $(DIST_DIR)
