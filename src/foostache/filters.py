@@ -48,7 +48,7 @@ def uri_component(s):
     fragments = list()
     for ch in s:
         fragments.append(uri_component._map[ch])
-    return u''.join(fragments)
+    return u"".join(fragments)
 
 
 uri_component._map = list()
@@ -66,7 +66,7 @@ def js_string(s):
     # TODO optimize this loop
     for ch in s:
         fragments.append(js_string._map.get(ch, ch))
-    return u''.join(fragments)
+    return u"".join(fragments)
 
 
 js_string._map = {

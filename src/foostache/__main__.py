@@ -10,11 +10,11 @@ from . import Template
 
 
 def print_error(message=None):
-    print("{0}: {1}".format('foostache', message), file=sys.stderr)
+    print("{0}: {1}".format("foostache", message), file=sys.stderr)
 
 
 def print_usage():
-    print("usage: {0} template-file context-json-file".format('foostache'), file=sys.stderr)
+    print("usage: {0} template-file context-json-file".format("foostache"), file=sys.stderr)
 
 
 def main(args=None):
@@ -29,14 +29,14 @@ def main(args=None):
             print_usage()
             return os.EX_USAGE
 
-        with open(args[0], encoding='utf_8') as f:
+        with open(args[0], encoding="utf_8") as f:
             data = f.read()
 
-        with open(args[1], 'rb') as f:
+        with open(args[1], "rb") as f:
             context = ujson.decode(f.read())
 
         template = Template(data)
-        print(template.render(context), end='')
+        print(template.render(context), end="")
         return os.EX_OK
 
     except Exception as e:
@@ -44,5 +44,5 @@ def main(args=None):
         return os.EX_SOFTWARE
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main(sys.argv))

@@ -47,7 +47,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         results = list()
         for statement in ctx.statement():
             results.append(self.visit(statement))
-        return u''.join(results)
+        return u"".join(results)
 
     # Visit a parse tree produced by FoostacheParser#statement.
     def visitStatement(self, ctx):
@@ -199,23 +199,23 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 chars.append(t.getText())
             elif t.symbol.type == FoostacheParser.FoostacheParser.ESCCHARQS:
                 x = t.getText()
-                if x[1] == '"':
+                if x[1] == "\"":
                     x = u"\""
-                elif x[1] == '\\':
+                elif x[1] == "\\":
                     x = u"\\"
-                elif x[1] == '/':
+                elif x[1] == "/":
                     x = u"/"
-                elif x[1] == 'b':
+                elif x[1] == "b":
                     x = u"\b"
-                elif x[1] == 'f':
+                elif x[1] == "f":
                     x = u"\f"
-                elif x[1] == 'n':
+                elif x[1] == "n":
                     x = u"\n"
-                elif x[1] == 'r':
+                elif x[1] == "r":
                     x = u"\r"
-                elif x[1] == 't':
+                elif x[1] == "t":
                     x = u"\t"
-                elif x[1] == 'u':
+                elif x[1] == "u":
                     x = chr(int(x[2:], 16))
                 else:
                     assert False

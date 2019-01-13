@@ -19,7 +19,7 @@ class Template(object):
             self._total_indent = 0
 
         def enterEveryRule(self, ctx):
-            print(' ' * self._total_indent + "{}: {}".format(type(ctx).__name__[:-7], ctx.getText()))
+            print(" " * self._total_indent + "{}: {}".format(type(ctx).__name__[:-7], ctx.getText()))
             self._total_indent += self._indent
 
         def exitEveryRule(self, ctx):
@@ -28,7 +28,7 @@ class Template(object):
 
     def __init__(self, data):
         if not isinstance(data, str):
-            raise ValueError('data is not str')
+            raise ValueError("data is not str")
 
         input_stream = antlr4.InputStream(data)
         lexer = FoostacheLexer.FoostacheLexer(input_stream)
