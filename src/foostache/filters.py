@@ -20,11 +20,11 @@ def html5(s):
         stack.append(s[head:m.start()])
         stack.append(html5._hash[m.group()])
         head = m.end()
-    return u"".join(stack)
+    return "".join(stack)
 
 
 html5._pattern = re.compile("[&<>\"']")
-html5._hash = {u"&": u"&amp;", u"<": u"&lt;", u">": u"&gt;", u"\"": u"&quot;", u"'": u"&#39;"}
+html5._hash = {"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"}
 
 
 # https://tools.ietf.org/html/rfc3986#section-2
@@ -48,7 +48,7 @@ def uri_component(s):
     fragments = list()
     for ch in s:
         fragments.append(uri_component._map[ch])
-    return u"".join(fragments)
+    return "".join(fragments)
 
 
 uri_component._map = list()
@@ -66,7 +66,7 @@ def js_string(s):
     # TODO optimize this loop
     for ch in s:
         fragments.append(js_string._map.get(ch, ch))
-    return u"".join(fragments)
+    return "".join(fragments)
 
 
 js_string._map = {

@@ -47,7 +47,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         results = list()
         for statement in ctx.statement():
             results.append(self.visit(statement))
-        return u"".join(results)
+        return "".join(results)
 
     # Visit a parse tree produced by FoostacheParser#statement.
     def visitStatement(self, ctx):
@@ -90,15 +90,15 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     def visitNumberFormat(self, ctx):
         # PERCENT (flags=ZERO)? (width=PINTEGERN)? (DOTN precision=PINTEGERN)? specifier=NUMBER_SPECIFIER
-        if ctx.specifier.text == u"d":
+        if ctx.specifier.text == "d":
             if ctx.width:
                 if ctx.flags:
                     return "{{:0{}d}}".format(ctx.width.text)
                 else:
                     return "{{:{}d}}".format(ctx.width.text)
             return "{:d}"
-        else:  # if ctx.specifier.text == u"f":
-            p = u"6"
+        else:  # if ctx.specifier.text == "f":
+            p = "6"
             if ctx.precision:
                 p = ctx.precision.text
             if ctx.width:
@@ -120,7 +120,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 return self.visit(e.statements())
         if ctx.elseBlock():
             return self.visit(ctx.elseBlock().statements())
-        return u""
+        return ""
 
     # Visit a parse tree produced by FoostacheParser#ifTag.
     def visitIfTag(self, ctx):
@@ -128,7 +128,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     #    # Visit a parse tree produced by FoostacheParser#elseifBlock.
     #    def visitElseifBlock(self, ctx):
-    #        return u"" # self.visitChildren(ctx)
+    #        return "" # self.visitChildren(ctx)
 
     # Visit a parse tree produced by FoostacheParser#elseifTag.
     def visitElseifTag(self, ctx):
@@ -136,7 +136,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
 
     #    # Visit a parse tree produced by FoostacheParser#elseBlock.
     #    def visitElseBlock(self, ctx):
-    #        return u"" # self.visitChildren(ctx)
+    #        return "" # self.visitChildren(ctx)
 
     #    # Visit a parse tree produced by FoostacheParser#expression.
     #    def visitExpression(self, ctx):
@@ -200,30 +200,30 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
             elif t.symbol.type == FoostacheParser.FoostacheParser.ESCCHARQS:
                 x = t.getText()
                 if x[1] == "\"":
-                    x = u"\""
+                    x = "\""
                 elif x[1] == "\\":
-                    x = u"\\"
+                    x = "\\"
                 elif x[1] == "/":
-                    x = u"/"
+                    x = "/"
                 elif x[1] == "b":
-                    x = u"\b"
+                    x = "\b"
                 elif x[1] == "f":
-                    x = u"\f"
+                    x = "\f"
                 elif x[1] == "n":
-                    x = u"\n"
+                    x = "\n"
                 elif x[1] == "r":
-                    x = u"\r"
+                    x = "\r"
                 elif x[1] == "t":
-                    x = u"\t"
+                    x = "\t"
                 elif x[1] == "u":
                     x = chr(int(x[2:], 16))
                 else:
                     assert False
                 chars.append(x)
-        key = u"".join(chars)
+        key = "".join(chars)
 
         if key not in self._working_path:
-            raise PathError(u"key {} not found in {}".format(ctx.getText(), self._working_path))
+            raise PathError("key {} not found in {}".format(ctx.getText(), self._working_path))
 
         self._working_path = self._working_path[key]
 
@@ -234,7 +234,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
         key = ctx.getText()
 
         if key not in self._working_path:
-            raise PathError(u"key {} not found in {}".format(ctx.getText(), self._working_path))
+            raise PathError("key {} not found in {}".format(ctx.getText(), self._working_path))
 
         self._working_path = self._working_path[key]
 
@@ -304,7 +304,7 @@ class Visitor(FoostacheParserVisitor.FoostacheParserVisitor):
                 self._contexts.pop()
             for x in clauses["after"]:
                 results.append(self.visit(x))
-        return u"".join(results)
+        return "".join(results)
 
     # Visit a parse tree produced by FoostacheParser#indexRange.
     def visitIndexRange(self, ctx):
