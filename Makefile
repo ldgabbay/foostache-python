@@ -11,6 +11,8 @@ BUILD_DIR = build
 DIST_DIR = dist
 CLASSPATH_DIR = classpath
 
+SOURCE_FILES := $(shell find src -type f -name \*.py | sed 's: :\\ :g')
+
 ANTLR4_JAR = $(CLASSPATH_DIR)/antlr-4.7.2-complete.jar
 
 PARSER_FILES = \
@@ -55,13 +57,13 @@ clean :
 
 dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
 
-$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz : $(PARSER_FILES)
+$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz : $(PARSER_FILES) $(SOURCE_FILES)
 	python ./setup.py sdist --dist-dir $(DIST_DIR)
 
-$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl : $(PARSER_FILES)
+$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl : $(PARSER_FILES) $(SOURCE_FILES)
 	python2 ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
-$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl : $(PARSER_FILES)
+$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl : $(PARSER_FILES) $(SOURCE_FILES)
 	python3 ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
 test : all
