@@ -42,7 +42,7 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 setup(
     name="foostache",
     version=find_version("src", "foostache", "__init__.py"),
-    description="Implementation of foostache template language",
+    description="The foostache template engine.",
     long_description=read(HERE, "README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/ldgabbay/foostache-python/",

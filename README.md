@@ -6,9 +6,9 @@
 
 **foostache** is a language and environment independent template engine.
 
-Unlike alternatives such as Jinja2 and mustache, **foostache** can theoretically be implemented in any programming language for any runtime environment. The **foostache** specification can be found [here](https://github.com/ldgabbay/foostache).
+Unlike alternatives such as Jinja2 and mustache, foostache can theoretically be implemented in any programming language for any runtime environment. The complete language specification can be found [here](https://github.com/ldgabbay/foostache).
 
-This package provides a command-line utility (`foostache` and `python -m foostache`) and an importable library for both Python 2 and 3.
+This package provides a command-line utility and modules for Python 2 and 3.
 
 
 ## Example
@@ -29,14 +29,18 @@ When the above context is applied to the above template, the following output is
 ```
 
 
-## Command-Line Usage
+## Command-Line
 
 ```text
 foostache template-file context-json-file
 ```
 
+```text
+python -m foostache template-file context-json-file
+```
 
-## Usage within Python
+
+## Module
 
 ```python
 import foostache
