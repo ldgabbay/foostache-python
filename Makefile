@@ -38,6 +38,9 @@ PARSER_FILES = \
 
 all : $(PARSER_FILES)
 
+$(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/FoostacheParser.g4 :
+	git submodule update --init --recursive
+
 $(PARSER_FILES) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/FoostacheParser.g4
 	cd $(SOURCE_DIR); java -Xmx500M -cp $(ROOT_DIR)/$(ANTLR4_JAR) org.antlr.v4.Tool -Dlanguage=Python2 -visitor -o $(ROOT_DIR)/$(PY2_TARGET_DIR) FoostacheLexer.g4 FoostacheParser.g4
 	cd $(SOURCE_DIR); java -Xmx500M -cp $(ROOT_DIR)/$(ANTLR4_JAR) org.antlr.v4.Tool -Dlanguage=Python3 -visitor -o $(ROOT_DIR)/$(PY3_TARGET_DIR) FoostacheLexer.g4 FoostacheParser.g4
