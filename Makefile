@@ -50,8 +50,8 @@ $(ANTLR4_JAR) :
 	curl -sSL https://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
 
 distclean : clean
-	rm -f $(PARSER_FILES) $(ANTLR4_JAR)
-	rm -rf .tox
+	rm -f $(PARSER_FILES)
+	rm -rf .tox $(CLASSPATH_DIR)
 
 clean :
 	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) src/$(PKG_NAME).egg-info
