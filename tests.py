@@ -1,5 +1,3 @@
-#coding:utf_8
-
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 from builtins import (ascii, bytes, chr, dict, filter, hex, input, int, map, next, oct, open, pow, range, round, str, super, zip)
 
@@ -15,11 +13,11 @@ class FoostacheTestCase(unittest.TestCase):
 
     def setUp(self):
         here = os.path.abspath(os.path.dirname(__file__))
-        with open(os.path.join(here, 'language', 'examples', 'sample1.fs'), encoding='utf_8') as f:
+        with open(os.path.join(here, "language", "examples", "sample1.fs"), encoding="utf_8") as f:
             self.sample1fs = f.read()
-        with open(os.path.join(here, 'language', 'examples', 'sample1.json'), 'rb') as f:
+        with open(os.path.join(here, "language", "examples", "sample1.json"), "rb") as f:
             self.sample1json = ujson.decode(f.read())
-        with open(os.path.join(here, 'language', 'examples', 'sample1.output'), encoding='utf_8') as f:
+        with open(os.path.join(here, "language", "examples", "sample1.output"), encoding="utf_8") as f:
             self.sample1output = f.read()
         self.maxDiff = None
 
@@ -29,5 +27,5 @@ class FoostacheTestCase(unittest.TestCase):
         self.assertEqual(self.sample1output, output)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

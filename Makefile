@@ -11,6 +11,8 @@ BUILD_DIR = build
 DIST_DIR = dist
 CLASSPATH_DIR = classpath
 
+SOURCE_FILES := $(shell find src -type f -name \*.py | sed 's: :\\ :g')
+
 ANTLR4_JAR = $(CLASSPATH_DIR)/antlr-4.7.2-complete.jar
 
 PARSER_FILES = \
@@ -36,6 +38,9 @@ PARSER_FILES = \
 
 all : $(PARSER_FILES)
 
+$(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/FoostacheParser.g4 :
+	git submodule update --init --recursive
+
 $(PARSER_FILES) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/FoostacheParser.g4
 	cd $(SOURCE_DIR); java -Xmx500M -cp $(ROOT_DIR)/$(ANTLR4_JAR) org.antlr.v4.Tool -Dlanguage=Python2 -visitor -o $(ROOT_DIR)/$(PY2_TARGET_DIR) FoostacheLexer.g4 FoostacheParser.g4
 	cd $(SOURCE_DIR); java -Xmx500M -cp $(ROOT_DIR)/$(ANTLR4_JAR) org.antlr.v4.Tool -Dlanguage=Python3 -visitor -o $(ROOT_DIR)/$(PY3_TARGET_DIR) FoostacheLexer.g4 FoostacheParser.g4
@@ -45,8 +50,8 @@ $(ANTLR4_JAR) :
 	curl -sSL https://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
 
 distclean : clean
-	rm -f $(PARSER_FILES) $(ANTLR4_JAR)
-	rm -rf .tox
+	rm -f $(PARSER_FILES)
+	rm -rf .tox $(CLASSPATH_DIR)
 
 clean :
 	rm -rf .eggs $(BUILD_DIR) $(DIST_DIR) src/$(PKG_NAME).egg-info
@@ -55,13 +60,13 @@ clean :
 
 dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
 
-$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz : $(PARSER_FILES)
+$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz : $(PARSER_FILES) $(SOURCE_FILES)
 	python ./setup.py sdist --dist-dir $(DIST_DIR)
 
-$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl : $(PARSER_FILES)
+$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl : $(PARSER_FILES) $(SOURCE_FILES)
 	python2 ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
-$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl : $(PARSER_FILES)
+$(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl : $(PARSER_FILES) $(SOURCE_FILES)
 	python3 ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
 test : all
