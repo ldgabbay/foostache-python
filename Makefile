@@ -13,7 +13,7 @@ CLASSPATH_DIR = classpath
 
 SOURCE_FILES := $(shell find src -type f -name \*.py | sed 's: :\\ :g')
 
-ANTLR4_JAR = $(CLASSPATH_DIR)/antlr-4.7.2-complete.jar
+ANTLR4_JAR = $(CLASSPATH_DIR)/antlr4.jar
 
 PARSER_FILES = \
 	$(PY2_TARGET_DIR)/FoostacheLexer.interp \
@@ -47,7 +47,7 @@ $(PARSER_FILES) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/Fo
 
 $(ANTLR4_JAR) :
 	mkdir -p $(CLASSPATH_DIR)
-	curl -sSL https://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
+	curl -sSL https://www.antlr.org/download/antlr-4.13.0-complete.jar -o $(ANTLR4_JAR)
 
 distclean : clean
 	rm -f $(PARSER_FILES)
@@ -58,7 +58,9 @@ clean :
 	find . -name __pycache__ -type d -print0 | xargs -0 rm -rf
 	find . -name \*.pyc -type f -delete
 
-dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
+dist2 : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl
+
+dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
 
 $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz : $(PARSER_FILES) $(SOURCE_FILES)
 	python ./setup.py sdist --dist-dir $(DIST_DIR)
@@ -69,12 +71,20 @@ $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl : $(PARSER_FILES) $(SOUR
 $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl : $(PARSER_FILES) $(SOURCE_FILES)
 	python3 ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
-test : all
+test2 : all
 	python2 ./setup.py test
+
+test : all
 	python3 ./setup.py test
 
+pypi2 : dist2
+	twine upload -r pypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl
+
 pypi : dist
-	twine upload -r pypi $(DIST_DIR)/*
+	twine upload -r pypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
+
+testpypi2 : dist2
+	twine upload -r testpypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl
 
 testpypi : dist
-	twine upload -r testpypi $(DIST_DIR)/*
+	twine upload -r testpypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl

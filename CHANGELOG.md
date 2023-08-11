@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.3.0 - 2023-08-11
+### Added
+- Removed dependency on `ujson`
+
+### Fixed
+- Dependency version specifiers were unnecessarily limited
+
 ## 1.1.2 - 2015-10-12
 ### Changed
 - Bumped Development Status to 5 - Production/Stable

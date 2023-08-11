@@ -10,16 +10,15 @@ PACKAGES = [
 ]
 
 INSTALL_REQUIRES = [
-    "future~=0.17.1",
-    "ujson~=1.35",
+    "future~=0.17",
 ]
 
 if sys.version_info[0] == 2:
     PACKAGES.append("foostache.py2parser")
-    INSTALL_REQUIRES.append("antlr4-python2-runtime~=4.7.2")
+    INSTALL_REQUIRES.append("antlr4-python2-runtime~=4.13")
 elif sys.version_info[0] == 3:
     PACKAGES.append("foostache.py3parser")
-    INSTALL_REQUIRES.append("antlr4-python3-runtime~=4.7.2")
+    INSTALL_REQUIRES.append("antlr4-python3-runtime~=4.13")
 else:
     raise RuntimeError("Unhandled Python version.")
 
@@ -62,6 +61,10 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing",
     ],

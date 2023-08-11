@@ -1,10 +1,10 @@
 from __future__ import (absolute_import, division, print_function, unicode_literals)
-from builtins import (ascii, bytes, chr, dict, filter, hex, input, int, map, next, oct, open, pow, range, round, str, super, zip)
+from builtins import (ascii, bytes, chr, dict, filter, hex, input, int, list, map, next, object, oct, open, pow, range, round, str, super, zip)
 
 import os
 import sys
 
-import ujson
+import json
 
 from . import Template
 
@@ -33,7 +33,7 @@ def main(args=None):
             data = f.read()
 
         with open(args[1], "rb") as f:
-            context = ujson.decode(f.read())
+            context = json.load(f)
 
         template = Template(data)
         print(template.render(context), end="")
