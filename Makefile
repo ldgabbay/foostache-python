@@ -13,7 +13,7 @@ CLASSPATH_DIR = classpath
 
 SOURCE_FILES := $(shell find src -type f -name \*.py | sed 's: :\\ :g')
 
-ANTLR4_JAR = $(CLASSPATH_DIR)/antlr-4.7.2-complete.jar
+ANTLR4_JAR = $(CLASSPATH_DIR)/antlr4.jar
 
 PARSER_FILES = \
 	$(PY2_TARGET_DIR)/FoostacheLexer.interp \
@@ -47,7 +47,7 @@ $(PARSER_FILES) : $(ANTLR4_JAR) $(SOURCE_DIR)/FoostacheLexer.g4 $(SOURCE_DIR)/Fo
 
 $(ANTLR4_JAR) :
 	mkdir -p $(CLASSPATH_DIR)
-	curl -sSL https://www.antlr.org/download/antlr-4.7.2-complete.jar -o $(ANTLR4_JAR)
+	curl -sSL https://www.antlr.org/download/antlr-4.13.0-complete.jar -o $(ANTLR4_JAR)
 
 distclean : clean
 	rm -f $(PARSER_FILES)

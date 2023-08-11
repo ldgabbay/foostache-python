@@ -15,10 +15,10 @@ INSTALL_REQUIRES = [
 
 if sys.version_info[0] == 2:
     PACKAGES.append("foostache.py2parser")
-    INSTALL_REQUIRES.append("antlr4-python2-runtime~=4.7")
+    INSTALL_REQUIRES.append("antlr4-python2-runtime~=4.13")
 elif sys.version_info[0] == 3:
     PACKAGES.append("foostache.py3parser")
-    INSTALL_REQUIRES.append("antlr4-python3-runtime~=4.7")
+    INSTALL_REQUIRES.append("antlr4-python3-runtime~=4.13")
 else:
     raise RuntimeError("Unhandled Python version.")
 
