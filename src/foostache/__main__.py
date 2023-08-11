@@ -4,7 +4,7 @@ from builtins import (ascii, bytes, chr, dict, filter, hex, input, int, map, nex
 import os
 import sys
 
-import ujson
+import json
 
 from . import Template
 
@@ -33,7 +33,7 @@ def main(args=None):
             data = f.read()
 
         with open(args[1], "rb") as f:
-            context = ujson.decode(f.read())
+            context = json.load(f)
 
         template = Template(data)
         print(template.render(context), end="")
