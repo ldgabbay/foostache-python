@@ -10,7 +10,7 @@ PACKAGES = [
 ]
 
 INSTALL_REQUIRES = [
-    "future~=0.17.1",
+    "future~=0.17",
 ]
 
 if sys.version_info[0] == 2:
