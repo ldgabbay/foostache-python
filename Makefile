@@ -58,7 +58,9 @@ clean :
 	find . -name __pycache__ -type d -print0 | xargs -0 rm -rf
 	find . -name \*.pyc -type f -delete
 
-dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
+dist2 : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl
+
+dist : $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
 
 $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION).tar.gz : $(PARSER_FILES) $(SOURCE_FILES)
 	python ./setup.py sdist --dist-dir $(DIST_DIR)
@@ -69,12 +71,20 @@ $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl : $(PARSER_FILES) $(SOUR
 $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl : $(PARSER_FILES) $(SOURCE_FILES)
 	python3 ./setup.py bdist_wheel --dist-dir $(DIST_DIR) --bdist-dir $(BUILD_DIR)
 
-test : all
+test2 : all
 	python2 ./setup.py test
+
+test : all
 	python3 ./setup.py test
 
+pypi2 : dist2
+	twine upload -r pypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl
+
 pypi : dist
-	twine upload -r pypi $(DIST_DIR)/*
+	twine upload -r pypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
+
+testpypi2 : dist2
+	twine upload -r testpypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py2-none-any.whl
 
 testpypi : dist
-	twine upload -r testpypi $(DIST_DIR)/*
+	twine upload -r testpypi $(DIST_DIR)/$(PKG_NAME)-$(PKG_VERSION)-py3-none-any.whl
